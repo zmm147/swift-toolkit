@@ -197,6 +197,7 @@ final class PaginationView: UIView, Loggable {
         // To make sure that the views the most likely to be visible are loaded first, we first load
         // the current one, then the next ones and to finish the previous ones.
         scheduleLoadPage(at: index, location: location)
+        delegate?.paginationViewDidUpdateViews(self)
         let lastIndex = scheduleLoadPages(from: index, upToPositionCount: preloadNextPositionCount, direction: .forward, location: .start)
         let firstIndex = scheduleLoadPages(from: index, upToPositionCount: preloadPreviousPositionCount, direction: .backward, location: .end)
 
@@ -210,7 +211,7 @@ final class PaginationView: UIView, Loggable {
         }
 
         await loadNextPage()
-        delegate?.paginationViewDidUpdateViews(self)
+        print("loadedNextpage")
     }
 
     private func loadNextPage() async {
