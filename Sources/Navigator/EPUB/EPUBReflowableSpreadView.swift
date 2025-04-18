@@ -149,6 +149,9 @@ final class EPUBReflowableSpreadView: EPUBSpreadView {
 
     override func spreadDidLoad() {
         Task {
+            let t0 = Date()
+            print("\(t0) ◇ spreadDidLoad start for \(spread.leading.href)")
+            
             if let linkJSON = serializeJSONString(spread.leading.json) {
                 await evaluateScript("readium.link = \(linkJSON);")
             }
@@ -158,16 +161,17 @@ final class EPUBReflowableSpreadView: EPUBSpreadView {
             // correctly before attempting to scroll to the target progression, otherwise we might end up at the wrong spot.
             // 0.2 seconds seems like a good value for it to work on an iPhone 5s.
             try? await Task.sleep(seconds: 0.2)
-
+             print("\(Date()) ◇ sleep(0.2) 完成")
             let location = pendingLocation
             await go(to: pendingLocation)
-
+print("\(Date()) ◇ go(to:\(pendingLocation)) 完成")
             // The rendering is sometimes very slow. So in case we don't show the first page of the resource, we add
             // a generous delay before showing the spread again.
             let delayed = !location.isStart
             try? await Task.sleep(seconds: delayed ? 0.3 : 0)
-
+print("\(Date()) ◇ sleep(delayed:\(delayed)) 完成")
             self.showSpread()
+            print("\(Date()) ◇ showSpread 调用")
         }
     }
 
