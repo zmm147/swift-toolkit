@@ -210,8 +210,11 @@ final class PaginationView: UIView, Loggable {
             }
         }
 
-        await loadNextPage()
-        print("loadedNextpage")
+        Task { [weak self] in
+            guard let self = self else { return }
+            await self.loadNextPage()
+            print("loadedNextpage")
+        }
     }
 
     private func loadNextPage() async {
